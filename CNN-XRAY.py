@@ -10,11 +10,10 @@ import tensorflow as tf
 tf.reset_default_graph()
 
 workpath = 'D:\\Spyder-Workspace\\Graduattion-Project\\Images-Decompressed\\'
-raw_train_dir = os.path.join(workpath, 'Training\\')
-raw_test_dir = os.path.join(workpath, 'Testing\\')
-temp = os.path.join(workpath, 'Test.temp\\')
-resized_train_dir = os.path.join(workpath, 'Training512\\')
-resized_test_dir = os.path.join(workpath, 'Testing512\\')
+raw_train_dir = os.path.join(workpath, 'Raw\\Training\\')
+raw_test_dir = os.path.join(workpath, 'Raw\\Testing\\')
+resized_train_dir = os.path.join(workpath, 'Resized-256\\Training\\')
+resized_test_dir = os.path.join(workpath, 'Resized-256\\Testing\\')
     
 ######################################### THIS BLOCK OF CODES ONLY RUN AT ONCE ####################################
 import PIL
@@ -25,16 +24,16 @@ for f in os.listdir(raw_train_dir):
     if f.endswith(".png"):                                                                                        
         name = os.path.splitext(f)[0]                                                                             
         img = Image.open(raw_train_dir + f)
-        img = img.resize((512,512), Image.ANTIALIAS)
-        img.save('D:\\Spyder-Workspace\\Graduattion-Project\\Images-Decompressed\\Training512\\' + name + '.png')
+        img = img.resize((256,256), Image.ANTIALIAS)
+        img.save(resized_train_dir + name + '.png')
     
 # 2. For testing images
 for f2 in os.listdir(raw_test_dir):
     if f2.endswith(".png"):
         name2 = os.path.splitext(f2)[0]
         img2 = Image.open(raw_test_dir + f2)
-        img2 = img2.resize((512,512), Image.ANTIALIAS)
-        img.save('D:\\Spyder-Workspace\\Graduattion-Project\\Images-Decompressed\\Testing512\\' + name2 + '.png')
+        img2 = img2.resize((256,256), Image.ANTIALIAS)
+        img2.save(resized_test_dir + name2 + '.png')
 ###################################################################################################################
 
 def load_data(data_directory):
@@ -61,7 +60,7 @@ index = 0
 count = 0
 new_images = []
 for i in range(len(images)):
-    if images[i].shape != (32, 32, 4):
+    if images[i].shape != (256, 256, 4):
         count +=1
         new_images.append(images[i])
     else:
@@ -69,17 +68,38 @@ for i in range(len(images)):
         del labels[index]
 print("number of errors removed: ", len(images)-count)
 
-print(np.ndim(new_images))
-print(np.size(new_images))
 
+##################################### ANALYZE DATASET ####################################################
+
+print(np.ndim(images))
+print(np.size(images))
+print(np.ndim(labels)) # Dimension of 'labels'
+print(np.size(labels)) # Size of 'labels'
+print(len(set(labels))) # Length of 'labels'
+
+# 1. Random Images
 random_sample = [200, 2550, 3750, 4100] # Determine the (random) indexes of the images that you want to see 
 # Fill out the subplots with the random images that you defined 
 for i in range(len(random_sample)):
     plt.subplot(1, 4, i+1)
     plt.axis('off')
-    plt.imshow(new_images[random_sample[i]])
+    plt.imshow(images[random_sample[i]])
     plt.subplots_adjust(wspace=0.5)
     plt.show()
     print("shape: {0}, min: {1}, max: {2}".format(images[random_sample[i]].shape, 
                                                   images[random_sample[i]].min(), 
                                                   images[random_sample[i]].max()))
+    
+# 2. All Labels
+unique_labels = set(labels) # Get the unique labels 
+plt.figure(figsize=(15, 15)) # Initialize the figure
+i = 1 # Set a counter
+# For each unique label,
+for label in unique_labels:
+    image = images[labels.index(label)] # pick the first image for each label 
+    plt.subplot(8, 8, i) # Define 64 subplots
+    plt.axis('off') # Don't include axes
+    plt.title("Label {0} ({1})".format(label, labels.count(label))) # Add a title to each subplot 
+    i += 1 # Add 1 to the counter
+    plt.imshow(image) # plot this first image 
+plt.show()
