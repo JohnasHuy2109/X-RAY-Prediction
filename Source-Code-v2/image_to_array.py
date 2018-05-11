@@ -14,14 +14,14 @@ def save_to_arr(arr_name, arr_obj):
 if __name__ == "__main__":
     ROOT_PATH = "E:\\FOR UNIVERSITY\\Special-Document\\Graduation-Project\\Images\\"
     start_time = time.time()
-    labels = pd.read_csv(ROOT_PATH + 'Data_samples.csv')
+    labels = pd.read_csv(ROOT_PATH + 'Data_samples2.csv')
     
     print("Writing training array.....")
-    X_train = convert_image_to_arr(ROOT_PATH + 'Resized-256\\', labels)
+    X_train = convert_image_to_arr(ROOT_PATH + 'Resized-128\\', labels)
     print("Done!")
     print(X_train.shape)
     
     print("Saving training array.....")
-    save_to_arr(ROOT_PATH + "X_train.npy", X_train)
+    save_to_arr(ROOT_PATH + "X_train2.npy", X_train)
     print ("Done!")
     print("Seconds: ", round((time.time() - start_time), 2))

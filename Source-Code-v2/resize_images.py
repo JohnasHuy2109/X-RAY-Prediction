@@ -19,9 +19,9 @@ def crop_and_resize_image(path, new_path, img_size):
 if __name__ == "__main__":
     ROOT_PATH = "E:\\FOR UNIVERSITY\\Special-Document\\Graduation-Project\\Images\\"
     Raw_path = os.path.join(ROOT_PATH, "Raw\\")
-    Resized_path = os.path.join(ROOT_PATH, "Resized-256\\")
+    Resized_path = os.path.join(ROOT_PATH, "Resized-128\\")
     start_time = time.time()
-    crop_and_resize_image(path=Raw_path, new_path=Resized_path, img_size=256)
+    crop_and_resize_image(path=Raw_path, new_path=Resized_path, img_size=128)
     print("Second: ", time.time() - start_time)
-    
+    print("Done!")
     

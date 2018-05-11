@@ -31,9 +31,11 @@ if __name__ == "__main__":
     
     data = h2o.H2OFrame(data)
     
-    train, valid, test = data.split_frame(ratios=[0.6, 0.2], seed=8)
+    train, valid, test = data.split_frame(ratios=[0.8, 0.1], seed=8)
     
     training_columns = get_training_columns(train, 'Finding Labels')
     
     gbm = H2OGradientBoostingEstimator(ntrees=1000, distribution='multinomial', max_depth=2, learn_rate=0.001, balance_classes=True)
     gbm.train(x=training_columns, y='Finding Labels', training_frame=train, validation_frame=valid)
+    
+    

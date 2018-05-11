@@ -7,7 +7,7 @@ def get_list_image(filename):
 if __name__ == '__main__':
     ROOT_PATH = "E:\\FOR UNIVERSITY\\Special-Document\\Graduation-Project\\Images\\"
     data = pd.read_csv(os.path.join(ROOT_PATH, "Data_Entry_2017.csv"))
-    samples = os.listdir(os.path.join(ROOT_PATH, "Resized-256\\"))
+    samples = os.listdir(os.path.join(ROOT_PATH, "Resized-128\\"))
     samples = pd.DataFrame({"Image Index": samples})
     samples = pd.merge(samples, data, how = 'left', on = 'Image Index')
     
@@ -20,4 +20,4 @@ if __name__ == '__main__':
     samples.drop(['OriginalImage[Width','Height]'], axis=1, inplace=True)
 
     print('Writing new CSV')
-    samples.to_csv(os.path.join(ROOT_PATH, 'Data_samples.csv'), index=False, header=True)
+    samples.to_csv(os.path.join(ROOT_PATH, 'Data_samples2.csv'), index=False, header=True)
